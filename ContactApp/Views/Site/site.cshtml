@@ -1,0 +1,35 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+@model Site
+<h1>Site</h1>
+@if (Model == null)
+{
+    <div>
+        Une erreur s'est produite, veuillez reessayer
+    </div>
+    <button type="button" class="btn col p-1 btn-secondary">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Site" asp-action="">Retour</a>
+    </button>
+}
+else
+{
+
+    <div>Site de @Model.City</div>
+
+    <form asp-controller="Site" asp-action="SubmitUpdateForm" asp-route-id="@Model.Id" method="post">
+        <div class="form-group">
+            <input type="text" name="city" placeholder="Nouvelle ville du site" class="col p-1 mb-3 mt-3" form-control" />
+            <button type="submit" class="btn col p-1 btn-secondary">Valider</button>
+        </div>
+    </form>
+
+    <button type="button" class="btn col p-1 btn-secondary">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Site" asp-action="">Retour</a>
+    </button>
+
+}

@@ -1,0 +1,33 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model List<Site>
+<h1>Liste des sites</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Site <a asp-controller="Site" asp-action="FormSite"> <i class="fas fa-plus"></i> </a> </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Site site in Model)
+        {
+            <tr>
+                <td>
+                    @site.City
+                </td>
+                <td>
+                    <a asp-controller="Site" asp-action="DisplaySite" asp-route-id="@site.Id">Modifier</a>
+                </td>
+                <td>
+                    <a asp-controller="Site" asp-action="DeleteSite" asp-route-id="@site.Id">Supprimer</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

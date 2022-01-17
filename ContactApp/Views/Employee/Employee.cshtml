@@ -1,0 +1,57 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    List<Service> services = Service.GetServices();
+    List<Site> sites = Site.GetSites();
+}
+
+@model Employee
+
+<form asp-controller="Employee" asp-action="SubmitForm" method="post">
+    <div class="form-group">
+        <label for="Prenom">Prenom</label>
+        <textarea type="text" class="form-control" id="Prenom" name="FirstName" placeholder="@Model.FirstName" disabled />
+    </div>
+    <div class="form-group">
+        <label for="Nom">Nom</label>
+        <textarea type="text" class="form-control" id="Nom" name="Lastname" placeholder="@Model.Lastname" disabled />
+    </div>
+    <div class="form-group">
+        <label for="Telephone">Telephone</label>
+        <input type="number" class="form-control" id="Telephone" name="PhoneNumber" placeholder="@Model.PhoneNumber" required maxlength="10" max="0699999999">
+    </div>
+    <div class="form-group">
+        <label for="Site">Site :</label>
+        <select class="form-control" id="Site" name="IdSite" required>
+            <option disabled>@Model.Site</option>
+            @foreach (Site site in sites)
+            {
+                <option value="@site.Id">@site.City</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="Site">Service :</label>
+        <select class="form-control" id="Service" name="IdService" required>
+            <option disabled>@Model.Site</option>
+            @foreach (Service service in services)
+            {
+                if (@service.Id != Model.IdSite)
+                {
+                    <option value="@service.Id">@service.ServiceName</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="Mail">Email address</label>
+        <input type="email" class="form-control" id="Mail" placeholder="@Model.Mail" name="Mail" required maxlength="50">
+    </div>
+    <div class="form-group">
+        <label for="CellphoneNumber">Téléphone Fixe</label>
+        <input type="number" class="form-control" id="CellphoneNumber" placeholder="@Model.CellphoneNumber" name="CellphoneNumber" required maxlength="10" max="0399999999">
+    </div>
+    <button type="submit" class="btn col p-1 mb-3 btn-secondary">Valider</button>
+    <button type="button" class="btn col p-1 btn-secondary" asp-area="" asp-controller="Employee" asp-action="">Retour</button>
+</form>

@@ -5,10 +5,10 @@ using MySql.Data.MySqlClient;
 
 namespace ContactApp.Models
 {
-    public class Site
-    {        
+    public class Service
+    {
         private int id;
-        private string city;
+        private string serviceName;
 
         private static string request;
         private static MySqlCommand command;
@@ -16,59 +16,56 @@ namespace ContactApp.Models
         private static MySqlDataReader reader;
 
         public int Id { get => id; set => id = value; }
-        public string City { get => city; set => city = value; }
-        
+        public string ServiceName { get => serviceName; set => serviceName = value; }
 
-        public Site()
+        public Service()
         {
         }
 
-        public bool AddSite()
+        public bool AddService()
         {
-            request = "INSERT INTO site (site_city) values (@site_city)";
+            request = "INSERT INTO service (service_name) values (@serviceName)";
             connection = Db.Connection;
             command = new MySqlCommand(request, connection);
-            command.Parameters.Add(new MySqlParameter("@site_city", City));
+            command.Parameters.Add(new MySqlParameter("@serviceName", ServiceName));
             connection.Open();
             Id = Convert.ToInt32(command.ExecuteScalar());
             command.Dispose();
             connection.Close();
-            return Id > 0;
-        }
-
-        public bool CountSite()
-        {
-            request = "SELECT COUNT(*) FROM site WHERE site_city = @sitecity ";
-            connection = Db.Connection;
-            command = new MySqlCommand(request, connection);
-            command.Parameters.Add(new MySqlParameter("@sitecity", City));
-            connection.Open();
-            int nb = Convert.ToInt32(command.ExecuteScalar());
-            command.Dispose();
-            connection.Close();
-            return nb > 0;
+            return Id < 0;
         }
 
         public bool CountSiteUPD()
         {
-            request = "SELECT COUNT(*) FROM site WHERE site_city = @sitecity AND id_site != @id";
+            request = "SELECT COUNT(*) FROM service WHERE service_name = @servicename AND id_service != @id";
             connection = Db.Connection;
             command = new MySqlCommand(request, connection);
-            command.Parameters.Add(new MySqlParameter("@sitecity", City));
+            command.Parameters.Add(new MySqlParameter("@servicename", serviceName));
             command.Parameters.Add(new MySqlParameter("@id", Id));
             connection.Open();
             int nb = Convert.ToInt32(command.ExecuteScalar());
             command.Dispose();
-            connection.Close();
+            return nb > 0;
+        }
+
+        public bool CountSite()
+        {
+            request = "SELECT COUNT(*) FROM service WHERE service_name = @servicename";
+            connection = Db.Connection;
+            command = new MySqlCommand(request, connection);
+            command.Parameters.Add(new MySqlParameter("@servicename", serviceName));
+            connection.Open();
+            int nb = Convert.ToInt32(command.ExecuteScalar());
+            command.Dispose();
             return nb > 0;
         }
 
         public bool UpdateSite()
         {
-            request = "UPDATE site SET site_city = @site_city WHERE id_site = @id";
+            request = "UPDATE service SET service_name = @servicename WHERE id_service = @id";
             connection = Db.Connection;
             command = new MySqlCommand(request, connection);
-            command.Parameters.Add(new MySqlParameter("@site_city", City));
+            command.Parameters.Add(new MySqlParameter("@servicename", ServiceName));
             command.Parameters.Add(new MySqlParameter("@id", Id));
             connection.Open();
             int nb = command.ExecuteNonQuery();
@@ -77,64 +74,64 @@ namespace ContactApp.Models
             return nb == 1;
         }
 
-        public bool DeleteSite()
+        public bool DeleteService()
         {
-            request = "DELETE FROM site WHERE id_site = @id";
+            request = "DELETE FROM service WHERE id_service = @id";
             connection = Db.Connection;
             command = new MySqlCommand(request, connection);
             command.Parameters.Add(new MySqlParameter("@id", Id));
             connection.Open();
-            int nb = command.ExecuteNonQuery() ;
+            int nb = command.ExecuteNonQuery();
             command.Dispose();
             connection.Close();
             return nb == 1;
         }
 
-        public static Site GetSite(int id)
+        public static Service GetService(int id)
         {
-            Site site = null;
-            request = "SELECT id_site, site_city FROM site where id_site = @id";
+            Service service = null;
+            request = "SELECT id_service, service_name FROM service where id_service = @id";
             connection = Db.Connection;
             command = new MySqlCommand(request, connection);
             command.Parameters.Add(new MySqlParameter("@id", id));
             connection.Open();
             reader = command.ExecuteReader();
-            if(reader.Read())
+            if (reader.Read())
             {
-                site = new Site()
+                service = new Service()
                 {
                     Id = id,
-                    City = reader.GetString(1)
+                    ServiceName = reader.GetString(1)
                 };
             }
             reader.Close();
             command.Dispose();
             connection.Close();
-            return site;
+            return service;
         }
 
-        public static List<Site> GetSites()
+        public static List<Service> GetServices()
         {
-            List<Site> sites = new List<Site>();
-            request = "SELECT id_site, site_city FROM site";
+            List<Service> services = new List<Service>();
+            request = "SELECT id_service, service_name FROM service";
             connection = Db.Connection;
             command = new MySqlCommand(request, connection);
             connection.Open();
             reader = command.ExecuteReader();
             while (reader.Read())
             {
-                Site site = new Site()
+                Service service = new Service()
                 {
                     Id = reader.GetInt32(0),
-                    City = reader.GetString(1)
+                    ServiceName = reader.GetString(1)
                 };
 
-                sites.Add(site);
+                services.Add(service);
             }
             reader.Close();
             command.Dispose();
             connection.Close();
-            return sites;
+            return services;
         }
 
     }

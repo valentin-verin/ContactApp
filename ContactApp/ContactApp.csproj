@@ -7,9 +7,15 @@
   <ItemGroup>
     <None Remove="Tools\" />
     <None Remove="MySql.Data" />
+    <None Remove="Views\Site\" />
+    <None Remove="Views\Service\" />
+    <None Remove="Views\Employee\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tools\" />
+    <Folder Include="Views\Site\" />
+    <Folder Include="Views\Service\" />
+    <Folder Include="Views\Employee\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MySql.Data" Version="8.0.27" />
