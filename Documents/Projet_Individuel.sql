@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le : mer. 15 déc. 2021 à 14:26
+-- Généré le : mar. 18 jan. 2022 à 01:17
 -- Version du serveur : 10.4.21-MariaDB
 -- Version de PHP : 8.0.10
 
@@ -24,21 +24,28 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Admin`
+-- Structure de la table `admin`
 --
 
-CREATE TABLE `Admin` (
+CREATE TABLE `admin` (
   `Id_Admin` int(11) NOT NULL,
   `password` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Déchargement des données de la table `admin`
+--
+
+INSERT INTO `admin` (`Id_Admin`, `password`) VALUES
+(1, 'password');
+
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Employee`
+-- Structure de la table `employee`
 --
 
-CREATE TABLE `Employee` (
+CREATE TABLE `employee` (
   `Id_Employee` int(11) NOT NULL,
   `firstname` varchar(50) DEFAULT NULL,
   `lastname` varchar(50) DEFAULT NULL,
@@ -50,51 +57,57 @@ CREATE TABLE `Employee` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `Employee`
+-- Déchargement des données de la table `employee`
 --
 
-INSERT INTO `Employee` (`Id_Employee`, `firstname`, `lastname`, `phone_number`, `id_Site_FK`, `Id_Service_FK`, `mail`, `cellphone_number`) VALUES
-(1, 'Valentin', 'Verin', '0606060606', 3, 2, 'valentin.verin@viacesi.fr', '0327272727');
+INSERT INTO `employee` (`Id_Employee`, `firstname`, `lastname`, `phone_number`, `id_Site_FK`, `Id_Service_FK`, `mail`, `cellphone_number`) VALUES
+(1, 'Valentin', 'Verin', '0606060606', 3, 2, 'valentin.verin@viacesi.fr', '0327272727'),
+(2, 'François', 'Dupont', '0707070707', 4, 1, 'francois.dupont@viacesi.fr', '0327030303'),
+(4, 'patrick', 'coquelle', '0607060706', 5, 1, 'patrick.coquelle@viacesi.fr', '0303272727'),
+(7, 'Iron', 'Man', '0607060707', 8, 4, 'iron.man@avengers.fr', '0327032727');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Service`
+-- Structure de la table `service`
 --
 
-CREATE TABLE `Service` (
+CREATE TABLE `service` (
   `Id_Service` int(11) NOT NULL,
   `service_name` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `Service`
+-- Déchargement des données de la table `service`
 --
 
-INSERT INTO `Service` (`Id_Service`, `service_name`) VALUES
-(3, 'accueil'),
-(5, 'commercial'),
+INSERT INTO `service` (`Id_Service`, `service_name`) VALUES
+(7, 'Accueil'),
+(5, 'Commercial'),
 (1, 'Comptabilité'),
-(4, 'informatique'),
-(2, 'production');
+(4, 'Informatique'),
+(2, 'Production');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Site`
+-- Structure de la table `site`
 --
 
-CREATE TABLE `Site` (
-  `Id_Site` int(11) NOT NULL,
+CREATE TABLE `site` (
+  `Id_site` int(11) NOT NULL,
   `site_city` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `Site`
+-- Déchargement des données de la table `site`
 --
 
-INSERT INTO `Site` (`Id_Site`, `site_city`) VALUES
+INSERT INTO `site` (`Id_site`, `site_city`) VALUES
+(9, 'Bruxelles'),
+(33, 'Cambrai'),
 (5, 'Lille'),
+(8, 'Marseille'),
 (2, 'Nantes'),
 (4, 'Nice'),
 (1, 'Paris'),
@@ -105,15 +118,15 @@ INSERT INTO `Site` (`Id_Site`, `site_city`) VALUES
 --
 
 --
--- Index pour la table `Admin`
+-- Index pour la table `admin`
 --
-ALTER TABLE `Admin`
+ALTER TABLE `admin`
   ADD PRIMARY KEY (`Id_Admin`);
 
 --
--- Index pour la table `Employee`
+-- Index pour la table `employee`
 --
-ALTER TABLE `Employee`
+ALTER TABLE `employee`
   ADD PRIMARY KEY (`Id_Employee`),
   ADD UNIQUE KEY `phone_number` (`phone_number`),
   ADD UNIQUE KEY `mail` (`mail`),
@@ -122,17 +135,17 @@ ALTER TABLE `Employee`
   ADD KEY `id_Site_FK` (`id_Site_FK`);
 
 --
--- Index pour la table `Service`
+-- Index pour la table `service`
 --
-ALTER TABLE `Service`
+ALTER TABLE `service`
   ADD PRIMARY KEY (`Id_Service`),
   ADD UNIQUE KEY `service_name` (`service_name`);
 
 --
--- Index pour la table `Site`
+-- Index pour la table `site`
 --
-ALTER TABLE `Site`
-  ADD PRIMARY KEY (`Id_Site`),
+ALTER TABLE `site`
+  ADD PRIMARY KEY (`Id_site`),
   ADD UNIQUE KEY `site_city` (`site_city`);
 
 --
@@ -140,37 +153,37 @@ ALTER TABLE `Site`
 --
 
 --
--- AUTO_INCREMENT pour la table `Admin`
+-- AUTO_INCREMENT pour la table `admin`
 --
-ALTER TABLE `Admin`
-  MODIFY `Id_Admin` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `admin`
+  MODIFY `Id_Admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT pour la table `Employee`
+-- AUTO_INCREMENT pour la table `employee`
 --
-ALTER TABLE `Employee`
-  MODIFY `Id_Employee` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+ALTER TABLE `employee`
+  MODIFY `Id_Employee` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
--- AUTO_INCREMENT pour la table `Service`
+-- AUTO_INCREMENT pour la table `service`
 --
-ALTER TABLE `Service`
-  MODIFY `Id_Service` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+ALTER TABLE `service`
+  MODIFY `Id_Service` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
--- AUTO_INCREMENT pour la table `Site`
+-- AUTO_INCREMENT pour la table `site`
 --
-ALTER TABLE `Site`
-  MODIFY `Id_Site` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+ALTER TABLE `site`
+  MODIFY `Id_site` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- Contraintes pour les tables déchargées
 --
 
 --
--- Contraintes pour la table `Employee`
+-- Contraintes pour la table `employee`
 --
-ALTER TABLE `Employee`
+ALTER TABLE `employee`
   ADD CONSTRAINT `employee_ibfk_1` FOREIGN KEY (`Id_Service_FK`) REFERENCES `Service` (`Id_Service`),
   ADD CONSTRAINT `employee_ibfk_2` FOREIGN KEY (`id_Site_FK`) REFERENCES `Site` (`Id_Site`);
 COMMIT;
