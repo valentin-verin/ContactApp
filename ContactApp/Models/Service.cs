@@ -32,10 +32,10 @@ namespace ContactApp.Models
             Id = Convert.ToInt32(command.ExecuteScalar());
             command.Dispose();
             connection.Close();
-            return Id < 0;
+            return CountService();
         }
 
-        public bool CountSiteUPD()
+        public bool CountServiceUPD()
         {
             request = "SELECT COUNT(*) FROM service WHERE service_name = @servicename AND id_service != @id";
             connection = Db.Connection;
@@ -48,7 +48,19 @@ namespace ContactApp.Models
             return nb > 0;
         }
 
-        public bool CountSite()
+        public bool CountServiceDEL()
+        {
+            request = "SELECT COUNT(*) FROM employee WHERE id_service_fk = @id";
+            connection = Db.Connection;
+            command = new MySqlCommand(request, connection);
+            command.Parameters.Add(new MySqlParameter("@id", Id));
+            connection.Open();
+            int nb = Convert.ToInt32(command.ExecuteScalar());
+            command.Dispose();
+            return nb > 0;
+        }
+
+        public bool CountService()
         {
             request = "SELECT COUNT(*) FROM service WHERE service_name = @servicename";
             connection = Db.Connection;
@@ -60,7 +72,7 @@ namespace ContactApp.Models
             return nb > 0;
         }
 
-        public bool UpdateSite()
+        public bool UpdateService()
         {
             request = "UPDATE service SET service_name = @servicename WHERE id_service = @id";
             connection = Db.Connection;

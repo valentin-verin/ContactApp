@@ -1,0 +1,30 @@
+﻿@{
+}
+
+@model Service
+<h1>Service</h1>
+@if (Model == null)
+{
+    <div>
+        Une erreur s'est produite, veuillez reessayer
+    </div>
+    <button type="button" class="btn col p-1 btn-secondary">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Service" asp-action="">Retour</a>
+    </button>
+}
+else
+{
+    <div>Service @Model.ServiceName</div>
+
+    <form asp-controller="Service" asp-action="SubmitUpdateForm" asp-route-id="@Model.Id" method="post">
+        <div class="form-group">
+            <input type="text" name="serviceName" placeholder="Nouveau nom du service" class="col p-1 mb-3 mt-3" value="@Model.ServiceName" form-control" required>
+            <button type="submit" class="btn col p-1 btn-secondary">Modifier</button>
+        </div>
+    </form>
+
+    <button type="button" class="btn col p-1 btn-secondary">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Service" asp-action="">Retour</a>
+    </button>
+
+}

@@ -4,6 +4,12 @@
 @{
 }
 
+@if (ViewBag.Message != null)
+{
+    <div>
+        <span class="text-danger">@ViewBag.Message</span>
+    </div>
+}
 
 <h1>Ajout d'un site</h1>
 

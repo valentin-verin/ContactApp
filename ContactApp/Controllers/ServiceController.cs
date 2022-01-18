@@ -28,15 +28,28 @@ namespace ContactApp.Controllers
             return View("service", Service.GetService(id));
         }
 
+        [Route("update-service/{id?}")]
+        public IActionResult DisplayServiceUPD(int id)
+        {
+            return View("serviceUPD", Service.GetService(id));
+        }
+
         [Route("supprimer-service/{id?}")]
         public IActionResult DeleteService(int id)
         {
             Service service = Service.GetService(id);
-            if (service != null)
+            if(!service.CountServiceDEL())
             {
-                service.DeleteService();
+                if (service != null)
+                {
+                    service.DeleteService();
+                }
+                return RedirectToAction("Index", "Service");
             }
-            return RedirectToAction("Index", "Service", new { message = "Service supprimé avec succés" });
+            else
+            {
+                return RedirectToAction("Index", "Service", new { message = "Service occupé par un.e ou plusieurs employé.e.s" });
+            }
         }
 
 
@@ -49,11 +62,11 @@ namespace ContactApp.Controllers
         // Ajout du service
         public IActionResult SubmitForm(Service service)
         {
-            if(!service.CountSite())
+            if(!service.CountService())
             {
                 if (service.AddService())
                 {
-                    return RedirectToAction("Index", "Service", new { message = "Service ajouté" });
+                    return RedirectToAction("Index", "Service");
                 }
                 else
                 {
@@ -69,11 +82,11 @@ namespace ContactApp.Controllers
         // Update du service
         public IActionResult SubmitUpdateForm(Service service)
         {
-            if(!service.CountSiteUPD())
+            if(!service.CountServiceUPD())
             {
-                if (service.UpdateSite())
+                if (service.UpdateService())
                 {
-                    return RedirectToAction("Index", new { message = "Service modifié" });
+                    return RedirectToAction("Index");
                 }
                 else
                 {

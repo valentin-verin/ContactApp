@@ -1,35 +1,78 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿
 @{
+    @model Site
+    List<Employee> employees = Employee.GetEmployeesBySite(Model.Id);
 }
 
 
-@model Site
-<h1>Site</h1>
+<h1>Site de @Model.City</h1>
+
+
+
 @if (Model == null)
 {
     <div>
         Une erreur s'est produite, veuillez reessayer
     </div>
-    <button type="button" class="btn col p-1 btn-secondary">
+    <button type="button" class="btn col m-3 btn-secondary">
         <a class="nav-link text-dark" asp-area="" asp-controller="Site" asp-action="">Retour</a>
     </button>
 }
 else
 {
 
-    <div>Site de @Model.City</div>
+    if (employees.Count > 0)
+    {
+        <h3 class="pt-5 pb-3"> Employés du site de @Model.City : </h3>
 
-    <form asp-controller="Site" asp-action="SubmitUpdateForm" asp-route-id="@Model.Id" method="post">
-        <div class="form-group">
-            <input type="text" name="city" placeholder="Nouvelle ville du site" class="col p-1 mb-3 mt-3" form-control" />
-            <button type="submit" class="btn col p-1 btn-secondary">Valider</button>
-        </div>
-    </form>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Prénom</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Téléphone</th>
+                    <th scope="col">Site</th>
+                    <th scope="col">Service</th>
+                    <th scope="col">Mail</th>
+                    <th scope="col">Teléphone Fixe</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Employee employee in employees)
+                {
+                    <tr>
+                        <td>
+                            @employee.FirstName
+                        </td>
+                        <td>
+                            @employee.Lastname
+                        </td>
+                        <td>
+                            @employee.PhoneNumber
+                        </td>
+                        <td>
+                            @employee.Site
+                        </td>
+                        <td>
+                            @employee.Service
+                        </td>
+                        <td>
+                            @employee.Mail
+                        </td>
+                        <td>
+                            @employee.CellphoneNumber
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 
     <button type="button" class="btn col p-1 btn-secondary">
         <a class="nav-link text-dark" asp-area="" asp-controller="Site" asp-action="">Retour</a>
     </button>
 
 }
+
+
+

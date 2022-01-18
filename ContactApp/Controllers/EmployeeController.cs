@@ -25,6 +25,12 @@ namespace ContactApp.Controllers
         [Route("afficher-employee/{id?}")]
         public IActionResult DisplayEmployee(int id)
         {
+            return View("employeeInfo", Employee.GetEmployee(id));
+        }
+
+        [Route("modifier-employee/{id?}")]
+        public IActionResult UpdateEmployee(int id)
+        {
             return View("employee", Employee.GetEmployee(id));
         }
 
@@ -68,6 +74,20 @@ namespace ContactApp.Controllers
             }
         }
 
+        public IActionResult SubmitFormSearch(string name)
+        {
+            if (Employee.GetEmployeesSearch(name).Count > 0)
+            {
+                return View("Index", Employee.GetEmployeesSearch(name)); ;
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+
+        }
+            
+
 
         // Update du service
         public IActionResult SubmitUpdateForm(Employee employee)
@@ -80,12 +100,12 @@ namespace ContactApp.Controllers
                 }
                 else
                 {
-                    return View("employee");
+                    return RedirectToAction("SubmitUpdateForm", new { message = "Une erreur s'est produite, veuillez réessayer" });
                 }
             }
             else
             {
-                return View("employee", new { message = "Employé déjà existant" });
+                return RedirectToAction("DisplayEmployee", new { message = "Employé déjà existant" });
             }
         }
     }

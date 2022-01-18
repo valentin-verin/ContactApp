@@ -58,7 +58,7 @@ namespace ContactApp.Models
             Id = Convert.ToInt32(command.ExecuteScalar());
             command.Dispose();
             connection.Close();
-            return Id > 0;
+            return CountEmployee();
         }
 
         public bool UpdateEmployee()
@@ -102,8 +102,8 @@ namespace ContactApp.Models
         public bool CountEmployee()
         {
             request =   "SELECT COUNT(*) FROM `employee` " +
-                        "WHERE firstname = @firstname " +
-                        "OR lastname = @lastname " +
+                        "WHERE (firstname = @firstname " +
+                        "AND lastname = @lastname) " +
                         "OR phone_number = @phone_number " +
                         "OR mail = @mail " +
                         "OR cellphone_number = @cellphone_number ";
@@ -127,7 +127,7 @@ namespace ContactApp.Models
                         "OR lastname = @lastname " +
                         "OR phone_number = @phone_number " +
                         "OR mail = @mail " +
-                        "OR cellphone_number = @cellphone_number" +
+                        "OR cellphone_number = @cellphone_number " +
                         "AND id_employee != @id_employee ";
             connection = Db.Connection;
             command = new MySqlCommand(request, connection);
@@ -188,6 +188,117 @@ namespace ContactApp.Models
 
             connection = Db.Connection;
             command = new MySqlCommand(request, connection);
+            connection.Open();
+            reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                Employee employee = new Employee()
+                {
+                    Id = reader.GetInt32(0),
+                    FirstName = reader.GetString(1),
+                    Lastname = reader.GetString(2),
+                    PhoneNumber = reader.GetString(3),
+                    Site = reader.GetString(4),
+                    Service = reader.GetString(5),
+                    Mail = reader.GetString(6),
+                    CellphoneNumber = reader.GetString(7)
+                };
+
+                employees.Add(employee);
+            }
+            reader.Close();
+            command.Dispose();
+            connection.Close();
+            return employees;
+        }
+
+        public static List<Employee> GetEmployeesSearch(string name)
+        {
+            List<Employee> employees = new List<Employee>();
+            request = "SELECT Id_Employee, firstname, lastname, phone_number, s.site_city, S2.service_name, mail, cellphone_number " +
+                        "FROM employee e " +
+                        "INNER JOIN site s on e.id_Site_FK = s.Id_site " +
+                        "INNER JOIN service s2 on e.Id_Service_FK = s2.Id_Service " +
+                        "WHERE firstname LIKE @name " +
+                        "OR lastname LIKE @name ";
+
+            connection = Db.Connection;
+            command = new MySqlCommand(request, connection);
+            command.Parameters.Add(new MySqlParameter("@name", name + "%"));
+            connection.Open();
+            reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                Employee employee = new Employee()
+                {
+                    Id = reader.GetInt32(0),
+                    FirstName = reader.GetString(1),
+                    Lastname = reader.GetString(2),
+                    PhoneNumber = reader.GetString(3),
+                    Site = reader.GetString(4),
+                    Service = reader.GetString(5),
+                    Mail = reader.GetString(6),
+                    CellphoneNumber = reader.GetString(7)
+                };
+
+                employees.Add(employee);
+            }
+            reader.Close();
+            command.Dispose();
+            connection.Close();
+            return employees;
+        }
+
+
+        public static List<Employee> GetEmployeesBySite(int id)
+        {
+            List<Employee> employees = new List<Employee>();
+            request = "SELECT Id_Employee, firstname, lastname, phone_number, s.site_city, S2.service_name, mail, cellphone_number " +
+                        "FROM employee e " +
+                        "INNER JOIN site s on e.id_Site_FK = s.Id_site " +
+                        "INNER JOIN service s2 on e.Id_Service_FK = s2.Id_Service " +
+                        "WHERE id_site_fk = @id";
+
+            connection = Db.Connection;
+            command = new MySqlCommand(request, connection);
+            command.Parameters.Add(new MySqlParameter("@id", id));
+            connection.Open();
+            reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                Employee employee = new Employee()
+                {
+                    Id = reader.GetInt32(0),
+                    FirstName = reader.GetString(1),
+                    Lastname = reader.GetString(2),
+                    PhoneNumber = reader.GetString(3),
+                    Site = reader.GetString(4),
+                    Service = reader.GetString(5),
+                    Mail = reader.GetString(6),
+                    CellphoneNumber = reader.GetString(7)
+                };
+
+                employees.Add(employee);
+            }
+            reader.Close();
+            command.Dispose();
+            connection.Close();
+            return employees;
+        }
+
+
+        public static List<Employee> GetEmployeesByService(int id)
+        {
+            List<Employee> employees = new List<Employee>();
+            request = "SELECT Id_Employee, firstname, lastname, phone_number, s.site_city, S2.service_name, mail, cellphone_number " +
+                        "FROM employee e " +
+                        "INNER JOIN site s on e.id_Site_FK = s.Id_site " +
+                        "INNER JOIN service s2 on e.Id_Service_FK = s2.Id_Service " +
+                        "WHERE id_service_fk = @id";
+
+            connection = Db.Connection;
+            command = new MySqlCommand(request, connection);
+            command.Parameters.Add(new MySqlParameter("@id", id));
             connection.Open();
             reader = command.ExecuteReader();
             while (reader.Read())

@@ -23,26 +23,42 @@ namespace ContactApp.Controllers
         // Affichage d'un site
 
         [Route("afficher-site/{id?}")]
-        public IActionResult DisplaySite(int id)
+        public IActionResult DisplaySite(int id, string message)
         {
+            ViewBag.Message = message;
             return View("site", Site.GetSite(id));
+        }
+
+        [Route("update-site/{id?}")]
+        public IActionResult DisplaySiteUPD(int id, string message)
+        {
+            ViewBag.Message = message;
+            return View("siteUPD", Site.GetSite(id));
         }
 
         [Route("supprimer-site/{id?}")]
         public IActionResult DeleteSite(int id)
         {
             Site site = Site.GetSite(id);
-            if (site != null)
+            if (!site.CountSiteDEL())
             {
-                site.DeleteSite();
+                if (site != null)
+                {
+                    site.DeleteSite();
+                }
+                return RedirectToAction("Index", "Site");
             }
-            return RedirectToAction("Index", "Site", new { message = "Site Supprimé avec succés" });
+            else
+            {
+                return RedirectToAction("Index", "Site", new { message = "Site occupé par un.e ou plusieurs employé.e.s" });
+            }
         }
 
 
         // Page d'ajout d'un site 
-        public IActionResult FormSite()
+        public IActionResult FormSite(string message)
         {
+            ViewBag.Message = message;
             return View("form");
         }
 
@@ -53,16 +69,16 @@ namespace ContactApp.Controllers
             {
                 if (site.AddSite())
                 {
-                    return RedirectToAction("Index", new { message = "Site ajouté" });
+                    return RedirectToAction("Index");
                 }
                 else
                 {
-                    return View("form");
+                    return RedirectToAction("FormSite", new { message = "Site déjà existant" });
                 }
             }
             else
             {
-                return View("Index", new { message = "Site déjà existant" });
+                return RedirectToAction("FormSite", new { message = "Site déjà existant" });
             }
         }
 
@@ -73,16 +89,16 @@ namespace ContactApp.Controllers
             {
                 if (site.UpdateSite())
                 {
-                    return RedirectToAction("Index", new { message = "Site modifié" });
+                    return RedirectToAction("Index");
                 }
                 else
                 {
-                    return View("site");
+                    return RedirectToAction("DisplaySiteUPD", new { message = "Une erreur s'est produite, veuillez réessayer" });
                 }
             }
             else
             {
-                return View("site", new { message = "Site déjà existant" });
+                return RedirectToAction("DisplaySiteUPD", new { message = "Site déjà existant" });
             }
         }
 

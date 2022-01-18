@@ -2,58 +2,76 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    
 }
 
 
 
 @model List<Employee>
+    
+<h1 class="pt-3 pb-3"> <i class="fas fa-users"></i> Liste des Employés  </h1>
+<form asp-controller="Employee" asp-action="SubmitFormSearch" method="post">
+    <div class="input-group rounded">
+        <input type="search" class="form-control rounded" name="name" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+        <span class="input-group-text border-0" id="search-addon">
+            <button type="submit" class="fas fa-search"></button>
+        </span>
+        <span class="input-group-text border-0" id="search-addon">
+            <button type="submit" class="fas fa-redo"></button>
+        </span>
+    </div>
+</form>
 
-<h1>Liste des Employés <a asp-controller="Employee" asp-action="FormEmployee"> <i class="fas fa-plus"></i> </a> </h1>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">Prénom</th>
-            <th scope="col">Nom</th>
-            <th scope="col">Téléphone</th>
-            <th scope="col">Site</th>
-            <th scope="col">Service</th>
-            <th scope="col">Mail</th>
-            <th scope="col">Teléphone Fixe</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (Employee employee in Model)
-        {
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    @employee.FirstName
-                </td>
-                <td>
-                    @employee.Lastname
-                </td>
-                <td>
-                    @employee.PhoneNumber
-                </td>
-                <td>
-                    @employee.Site
-                </td>
-                <td>
-                    @employee.Service
-                </td>
-                <td>
-                    @employee.Mail
-                </td>
-                <td>
-                    @employee.CellphoneNumber
-                </td>
-                <td>
-                    <a asp-controller="Employee" asp-action="DisplayEmployee" asp-route-id="@employee.Id">Modifier</a>
-                </td>
-                <td>
-                    <a asp-controller="Employee" asp-action="DeleteEmployee" asp-route-id="@employee.Id">Supprimer</a>
-                </td>
+                <th scope="col">Prénom</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Téléphone</th>
+                <th scope="col">Site</th>
+                <th scope="col">Service</th>
+                <th scope="col">Mail</th>
+                <th scope="col">Teléphone Fixe</th>
+                <th></th>
+                <th></th>
+                <th><a asp-controller="Employee" asp-action="FormEmployee"> <i class="fas fa-plus fa-xs"></i> </a></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (Employee employee in Model)
+            {
+                <tr>
+                    <td>
+                        @employee.FirstName
+                    </td>
+                    <td>
+                        @employee.Lastname
+                    </td>
+                    <td>
+                        @employee.PhoneNumber
+                    </td>
+                    <td>
+                        @employee.Site
+                    </td>
+                    <td>
+                        @employee.Service
+                    </td>
+                    <td>
+                        @employee.Mail
+                    </td>
+                    <td>
+                        @employee.CellphoneNumber
+                    </td>
+                    <td>
+                        <a asp-controller="Employee" asp-action="DisplayEmployee" asp-route-id="@employee.Id"><i class="fas fa-eye"></i></a>
+                    </td>
+                    <td>
+                        <a asp-controller="Employee" asp-action="UpdateEmployee" asp-route-id="@employee.Id"><i class="fas fa-user-edit"></i></a>
+                    </td>
+                    <td>
+                        <a asp-controller="Employee" asp-action="DeleteEmployee" asp-route-id="@employee.Id"><i class="fas fa-trash"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>

@@ -5,28 +5,42 @@
 }
 
 @model List<Site>
-<h1>Liste des sites</h1>
+<h1 class="pt-3 pb-3"> <i class="far fa-building"></i> Liste des sites</h1>
+
+@if (ViewBag.Message != null)
+{
+    <div class="text-danger mb-2 mt-2">
+        <span>@ViewBag.Message</span>
+    </div>
+}
+
 
 <table class="table">
     <thead>
         <tr>
-            <th scope="col">Site <a asp-controller="Site" asp-action="FormSite"> <i class="fas fa-plus"></i> </a> </th>
+            <th scope="col"> Site </th>
+            <th scope="col"></th>
+            <th></th>
+            <th scope="col" style="text-align: right;"><a asp-controller="Site" asp-action="FormSite"> <i class="fas fa-plus"></i> </a></th>
         </tr>
     </thead>
     <tbody>
         @foreach (Site site in Model)
         {
-            <tr>
-                <td>
-                    @site.City
-                </td>
-                <td>
-                    <a asp-controller="Site" asp-action="DisplaySite" asp-route-id="@site.Id">Modifier</a>
-                </td>
-                <td>
-                    <a asp-controller="Site" asp-action="DeleteSite" asp-route-id="@site.Id">Supprimer</a>
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @site.City
+            </td>
+            <td style="text-align: right;">
+                <a asp-controller="Site" asp-action="DisplaySite" asp-route-id="@site.Id"><i class="fas fa-eye"></i></a>
+            </td>
+            <td style="text-align: right;">
+                <a asp-controller="Site" asp-action="DisplaySiteUPD" asp-route-id="@site.Id"><i class="fas fa-pen"></i></a>
+            </td>
+            <td style="text-align: right;">
+                <a asp-controller="Site" asp-action="DeleteSite" asp-route-id="@site.Id"><i class="fas fa-trash"></i></a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

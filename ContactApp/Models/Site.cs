@@ -33,7 +33,8 @@ namespace ContactApp.Models
             Id = Convert.ToInt32(command.ExecuteScalar());
             command.Dispose();
             connection.Close();
-            return Id > 0;
+            return CountSite();
+
         }
 
         public bool CountSite()
@@ -55,6 +56,19 @@ namespace ContactApp.Models
             connection = Db.Connection;
             command = new MySqlCommand(request, connection);
             command.Parameters.Add(new MySqlParameter("@sitecity", City));
+            command.Parameters.Add(new MySqlParameter("@id", Id));
+            connection.Open();
+            int nb = Convert.ToInt32(command.ExecuteScalar());
+            command.Dispose();
+            connection.Close();
+            return nb > 0;
+        }
+
+        public bool CountSiteDEL()
+        {
+            request = "SELECT COUNT(*) FROM employee WHERE id_site_fk = @id";
+            connection = Db.Connection;
+            command = new MySqlCommand(request, connection);
             command.Parameters.Add(new MySqlParameter("@id", Id));
             connection.Open();
             int nb = Convert.ToInt32(command.ExecuteScalar());
